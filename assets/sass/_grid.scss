@@ -1,0 +1,54 @@
+/*!
+ * Super simple responsive grid system
+ * Version - 0.1
+ * Licensed under the MIT license - http://opensource.org/licenses/MIT
+ *
+ * Copyright (c) 2016 Patrick Verwoerd
+ */
+
+$columns: 12; // number of columns
+$max-width: 966px; // max width of grid
+$column-margin: 30px; // margin between columns
+
+$column-width: (($max-width - (($columns - 1) * $column-margin)) / $columns) / $max-width * 100%;
+$margin-pc: $column-margin / $max-width * 100%;
+@mixin columns ($number) {width:($column-width * $number)+($margin-pc * ($number - 1));}
+@for $num from 1 through $columns {._#{$num} {width:($column-width * $num)+($margin-pc * ($num - 1));}}
+
+.section {
+	width: 96%;
+	margin: auto;
+	padding: 0;
+	max-width: $max-width;
+	&:after {
+		content: ".";
+		display: block;
+		height: 0;
+		clear: both;
+		visibility: hidden;
+	}
+	> div {
+		float: left;
+		-moz-box-sizing: border-box;
+		-webkit-box-sizing:border-box;
+		box-sizing: border-box;
+		margin-right: $margin-pc;
+		&:last-child {
+			margin-right: 0;
+			float: right;
+		}
+	}
+	&.fullwidth, .section {
+		width: 100%;
+	}
+	&.expanded {
+		width: 100%;
+		max-width: none;
+	}
+}
+%example {
+	@include columns (2);
+	@media (max-width: 500px) {
+		@include columns (3);
+	}
+}
